@@ -1,6 +1,9 @@
 const express = require('express');
 require('dotenv').config()
+const bd = require('./config/database');
 const app = express();
+
+bd.connectBD();
 
 app.use('/', (req, res) => {
     res.status(200).send('OK');
