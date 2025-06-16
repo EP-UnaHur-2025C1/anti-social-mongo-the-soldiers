@@ -1,8 +1,12 @@
-const moongose = require('mongoose');
-const arhiveSchema = new moongose.Schema({
+const mongoose = require('mongoose');
+
+const archiveSchema = new mongoose.Schema({
     imagenes: {
         type: String,
         required: true
     }
-})
-module.exports = moongose.model('archives', arhiveSchema);
+}, {
+    versionKey: false 
+});
+
+module.exports = mongoose.model('Archive', archiveSchema);
