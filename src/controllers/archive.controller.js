@@ -2,12 +2,11 @@ const Archive = require('../models/archive.model');
 
 const uploadArchive = async (req, res) => {
     try {
-        // IMPORTANTE: req.archive no existe, el archivo está en req.file
         if (req.file) {
             const PORT = process.env.PORT;
             const imageUrl = `http://localhost:${PORT}/images/${req.file.filename}`;
 
-            // Crear el documento en MongoDB
+            // create a new archive entry in the database
             const newArchive = await Archive.create({ imagenes: imageUrl });
 
             return res.status(201).json({
@@ -25,6 +24,7 @@ const uploadArchive = async (req, res) => {
 
 const getArchives = async (req, res) => {
     try {
+        // Fetch all archives from the database
         const archives = await Archive.find();
         return res.status(200).json({
             message: 'Archives retrieved successfully',
@@ -39,12 +39,11 @@ const getArchives = async (req, res) => {
 const removeArchive = async (req, res) => {
     try {
         const { id } = req.params;
-
         const archiveToDelete = await Archive.findById(id);
         if (!archiveToDelete) {
             return res.status(404).json({ message: 'Archive not found' });
         }
-
+        // Delete the archive from the database
         await Archive.findByIdAndDelete(id);
 
         return res.status(200).json({ message: 'Archive deleted successfully' });
