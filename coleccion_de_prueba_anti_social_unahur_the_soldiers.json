@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "_id": "665fa0b1dbe8b5e8fc0a0011",
+      "nickName": "maximo_cozeti",
+      "email": "cozeti@mail.com",
+      "password": "hola123"
+    }
+  ],
+  "tags": [
+    {
+      "_id": "665fa0b1dbe8b5e8fc0a0022",
+      "tag": "Programacion"
+    },
+    {
+      "_id": "665fa0b1dbe8b5e8fc0a0023",
+      "tag": "APIs"
+    }
+  ],
+  "posts": [
+    {
+      "_id": "665fa0b1dbe8b5e8fc0a0033",
+      "userId": "665fa0b1dbe8b5e8fc0a0011",
+      "content": "Que es una API?",
+      "creationDate": "2025-06-10T12:00:00Z"
+    }
+  ],
+  "postImages": [
+    {
+      "_id": "665fa0b1dbe8b5e8fc0a0044",
+      "postId": "665fa0b1dbe8b5e8fc0a0033",
+      "url": "https://cloudinary.com/image/example.png"
+    }
+  ],
+  "comments": [
+    {
+      "_id": "665fa0b1dbe8b5e8fc0a0055",
+      "postId": "665fa0b1dbe8b5e8fc0a0033",
+      "userId": "665fa0b1dbe8b5e8fc0a0011",
+      "message": "Muy util, gracias!",
+      "creationDate": "2025-06-10T14:00:00Z",
+      "visible": true
+    }
+  ]
+}

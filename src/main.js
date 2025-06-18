@@ -1,6 +1,6 @@
 const express = require('express');
 const conectarDB = require('./config/database');
-const { archive, user } = require('./routes/main');
+const { archive, user, tag, comment, post } = require('./routes/main');
 require('dotenv').config()
 
 const app = express();
@@ -14,11 +14,14 @@ app.use(express.json());
 //Routers
 app.use('/api/archives', archive);
 app.use('/api/users', user);
+app.use('/api/comments', comment)
+app.use('/api/tags', tag)
+app.use('/api/posts', post);
 
 
 //Conexion MongoDB
 conectarDB();
 
 app.listen(PORT, () => {
-    console.log(`Ready in the PORT ${PORT}`)
+    console.log(`Listen in the PORT ${PORT}`)
 })
