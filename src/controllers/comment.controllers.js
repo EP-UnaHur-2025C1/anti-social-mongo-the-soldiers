@@ -1,14 +1,14 @@
-const Comments = require("../models/comment.model")
-const mongoose = require('mongoose');
+const Comments = require("../models/comment.model");
+const mongoose = require("mongoose");
 
-const getComments = async (req, res)=> {
+const getComments = async (req, res) => {
     try {
-        const comments = await Comments.find().select('comment creationDate -_id')
-        res.status(200).json(comments)
+        const comments = await Comments.find().select("comment creationDate userId postId visible _id");
+        res.status(200).json(comments);
     } catch (error) {
-        res.status(500).json({error: error.message})
+        res.status(500).json({ error: error.message });
     }
-}
+};
 
 const getCommentsPerMonth = async (req, res) => {
     try {
@@ -21,69 +21,86 @@ const getCommentsPerMonth = async (req, res) => {
         const comments = await Comments.find({
             creationDate: { $gte: limitDate },
             visible: true
-        }).select('comment creationDate -_id');
+        }).select("comment creationDate -_id");
 
-        const formattedComments = comments.map(comment => ({
-            comment: comment.comment,
-            date: comment.creationDate
-        }));
-
-        res.status(200).json(formattedComments);
+        res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-const getComment = async (req, res)=> {
+const getComment = async (req, res) => {
     try {
-        const id = req.params.id
-        const comment = await Comments.findById(id)
-        if(!comment) {
-            return res.status(404).json({message: `comment not found`})
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid comment ID" });
         }
-        res.status(200).json(comment)
-    } catch (error) {
-        res.status(500).json({error: error.message})
-    }
-}
 
-const createComment = async (req, res)=> {
-    try {
-        const newComment = new Comments(req.body)
-        await newComment.save()
-        res.status(201).json(newComment)
-    } catch (error) {
-        res.status(400).json({error: error.message})
-    }
-}
+        const comment = await Comments.findById(id);
 
-const editComment = async (req, res)=> {
+        if (!comment) {
+            return res.status(404).json({ message: "Comment not found" });
+        }
+
+        res.status(200).json(comment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const createComment = async (req, res) => {
     try {
-        const updatedComment = await Comments.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
-        })
+        const newComment = await Comments.create(req.body);
+        res.status(201).json(newComment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const editComment = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid comment ID" });
+        }
+
+        const updatedComment = await Comments.findByIdAndUpdate(
+            id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
         if (!updatedComment) {
-            return res.status(404).json({ mensaje: 'comment not found' })
+            return res.status(404).json({ message: "Comment not found" });
         }
-        res.json({ mensaje: 'comment updated successfully', comment: updatedComment })
+
+        res.status(200).json(updatedComment);
     } catch (error) {
-        res.status(400).json({ mensaje: 'error updating comment', error })
+        res.status(400).json({ error: error.message });
     }
-}
+};
 
 const deleteComment = async (req, res) => {
     try {
-        const id = req.params.id
-        const commentDeleted = await Comments.findByIdAndDelete(id)
-        if (!commentDeleted) {
-            return res.status(404).json({ mensaje: 'comment not found' })
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid comment ID" });
         }
-        res.json({ mensaje: 'comment successfully deleted', comment: commentDeleted })
+
+        const commentDeleted = await Comments.findByIdAndDelete(id);
+
+        if (!commentDeleted) {
+            return res.status(404).json({ message: "Comment not found" });
+        }
+
+        res.status(200).json({ message: "Comment deleted successfully" });
     } catch (error) {
-        res.status(500).json({ mensaje: 'error deleting comment', error })
+        res.status(500).json({ error: error.message });
     }
-}
+};
 
 module.exports = {
     getComments,
@@ -92,4 +109,4 @@ module.exports = {
     createComment,
     editComment,
     deleteComment
-}
+};

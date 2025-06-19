@@ -9,10 +9,10 @@ const postTagSchema = new mongoose.Schema({
     tagId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tag",
-        required: true //preguntar
+        required: true
     }
-});
+}, { versionKey: false });
 
-const PostTag=  mongoose.model("PostTag", postTagSchema)
+const PostTag = mongoose.model("PostTag", postTagSchema)
 
 module.exports = PostTag;

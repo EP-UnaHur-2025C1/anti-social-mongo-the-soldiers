@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-    nickName:{
+    nickName: {
         type: String,
-        require:[true, 'El nombre es obligatorio'],
+        require: [true, 'El nombre es obligatorio'],
         minlenght: [2, "Nombre debe tener al menos 2 caracteres"]
     }
-}, {strict:false})
+}, { versionKey: false }, { strict: false })
 
-const User = mongoose.model('User',userSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports= User;
+module.exports = User;
