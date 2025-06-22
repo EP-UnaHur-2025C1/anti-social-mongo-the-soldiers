@@ -1,5 +1,4 @@
 const Archive = require('../models/archive.model');
-
 const uploadArchive = async (req, res) => {
   try {
     if (!req.file) {

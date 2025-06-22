@@ -1,5 +1,4 @@
 const User = require('../models/user.model');
-
 const createUser = async (req, res) => {
   try {
     const user = new User({
@@ -11,6 +10,7 @@ const createUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
 const getUsers = async (_, res) => {
   try {
     const users = await User.find();

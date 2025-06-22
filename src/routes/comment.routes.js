@@ -1,7 +1,9 @@
 const { Router } = require("express");
 const controllers = require("../controllers/main");
 const commentControllers = controllers.comment;
+
 const { commentValidation } = require("../middleware/main");
+
 
 const router = Router();
 
