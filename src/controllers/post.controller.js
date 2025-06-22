@@ -6,8 +6,6 @@ const MAX_COMMENT_AGE_MONTHS = process.env.MAX_COMMENT_AGE_MONTHS || 6;
 const createPost = async (req, res) => {
   try {
     const { description, author, images, comments, tags } = req.body;
-
-    // Asumo que la validación de description y author está en middleware
     const newPost = await Post.create({
       description,
       author,
@@ -59,9 +57,7 @@ const getPostById = async (req, res) => {
           }
         }
       });
-
     if (!post) return res.status(404).json({ message: 'Post not found.' });
-
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching post.', error: error.message });
@@ -82,9 +78,7 @@ const updatePost = async (req, res) => {
       },
       { new: true }
     );
-
     if (!updatedPost) return res.status(404).json({ message: 'Post not found for update.' });
-
     res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ message: 'Error updating post.', error: error.message });
@@ -96,7 +90,6 @@ const deletePost = async (req, res) => {
     const deleted = await Post.findByIdAndDelete(req.params.id);
 
     if (!deleted) return res.status(404).json({ message: 'Post not found for deletion.' });
-
     res.status(200).json({ message: 'Post deleted successfully.' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting post.', error: error.message });
