@@ -5,7 +5,7 @@ info:
 
 servers:
   - url: http://localhost:9001
-
+  - url: https://anti-social-mongo-the-soldiers.onrender.com
 paths:
   /api/users:
     get:
