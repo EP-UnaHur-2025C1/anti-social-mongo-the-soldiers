@@ -1,27 +1,29 @@
 const { Router } = require("express");
 const controllers = require("../controllers/main");
 const commentControllers = controllers.comment;
-const commentMiddleware = require("../middleware/comments.middleware");
+
+const { commentValidation } = require("../middleware/main");
+
 
 const router = Router();
 
 router.get("/", commentControllers.getComments);
 router.get("/perMonth", commentControllers.getCommentsPerMonth);
 router.get("/:id",
-    commentMiddleware.validateCommentId,
+    commentValidation.validateCommentId,
     commentControllers.getComment
 );
 router.post("/",
-    commentMiddleware.validateCreateComment,
+    commentValidation.validateCreateComment,
     commentControllers.createComment
 );
 router.put("/:id",
-    commentMiddleware.validateCommentId,
-    commentMiddleware.validateUpdateComment,
+    commentValidation.validateCommentId,
+    commentValidation.validateUpdateComment,
     commentControllers.editComment
 );
 router.delete("/:id",
-    commentMiddleware.validateCommentId,
+    commentValidation.validateCommentId,
     commentControllers.deleteComment
 );
 

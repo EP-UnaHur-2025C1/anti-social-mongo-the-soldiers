@@ -1,5 +1,4 @@
 const Comments = require("../models/comment.model");
-const mongoose = require("mongoose");
 
 const getComments = async (req, res) => {
     try {
@@ -9,6 +8,7 @@ const getComments = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 const getCommentsPerMonth = async (req, res) => {
     try {
@@ -33,10 +33,6 @@ const getComment = async (req, res) => {
     try {
         const { id } = req.params;
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid comment ID" });
-        }
-
         const comment = await Comments.findById(id);
 
         if (!comment) {
@@ -58,14 +54,10 @@ const createComment = async (req, res) => {
     }
 };
 
+
 const editComment = async (req, res) => {
     try {
         const { id } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid comment ID" });
-        }
-
         const updatedComment = await Comments.findByIdAndUpdate(
             id,
             req.body,
@@ -82,14 +74,11 @@ const editComment = async (req, res) => {
     }
 };
 
+
 const deleteComment = async (req, res) => {
     try {
         const { id } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid comment ID" });
-        }
-
+      
         const commentDeleted = await Comments.findByIdAndDelete(id);
 
         if (!commentDeleted) {
@@ -110,3 +99,4 @@ module.exports = {
     editComment,
     deleteComment
 };
+
