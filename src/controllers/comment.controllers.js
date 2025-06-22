@@ -1,6 +1,6 @@
 const Comments = require("../models/comment.model");
-const mongoose = require("mongoose");
 
+// Obtener todos los comentarios
 const getComments = async (req, res) => {
     try {
         const comments = await Comments.find().select("comment creationDate userId postId visible _id");
@@ -10,6 +10,7 @@ const getComments = async (req, res) => {
     }
 };
 
+// Obtener comentarios de los últimos X meses
 const getCommentsPerMonth = async (req, res) => {
     try {
         const defaultMonths = parseInt(process.env.MONTHS_COMMENTS) || 6;
@@ -29,13 +30,10 @@ const getCommentsPerMonth = async (req, res) => {
     }
 };
 
+// Obtener un comentario por ID (la validez de ID ya la controla un middleware)
 const getComment = async (req, res) => {
     try {
         const { id } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid comment ID" });
-        }
 
         const comment = await Comments.findById(id);
 
@@ -49,6 +47,7 @@ const getComment = async (req, res) => {
     }
 };
 
+// Crear un comentario (validación previa vía middleware)
 const createComment = async (req, res) => {
     try {
         const newComment = await Comments.create(req.body);
@@ -58,13 +57,10 @@ const createComment = async (req, res) => {
     }
 };
 
+// Editar un comentario (la validez de ID ya la controla un middleware)
 const editComment = async (req, res) => {
     try {
         const { id } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid comment ID" });
-        }
 
         const updatedComment = await Comments.findByIdAndUpdate(
             id,
@@ -82,13 +78,10 @@ const editComment = async (req, res) => {
     }
 };
 
+// Eliminar un comentario (la validez de ID ya la controla un middleware)
 const deleteComment = async (req, res) => {
     try {
         const { id } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid comment ID" });
-        }
 
         const commentDeleted = await Comments.findByIdAndDelete(id);
 
