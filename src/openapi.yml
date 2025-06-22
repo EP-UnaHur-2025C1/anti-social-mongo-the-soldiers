@@ -93,9 +93,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '400':
-          description: ID inválido o error al actualizar
-        '404':
           description: Usuario no encontrado
+        '404':
+          description: ID inválido o error al actualizar
         '500':
           description: Error interno al actualizar usuario
 
@@ -118,6 +118,7 @@ paths:
           description: Usuario no encontrado
         '500':
           description: Error interno al eliminar usuario
+
   /api/tags:
     get:
       summary: Obtener todas las tags
@@ -225,6 +226,96 @@ paths:
           description: Tag no encontrada
         '500':
           description: Error interno al eliminar la tag
+  
+  /api/posts:
+    get:
+      summary: Obtener todos los posts
+      tags:
+        - Publicaciones
+      responses:
+        '200':
+          description: Lista de publicaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '500': 
+
+    post:
+      summary: Crear una nueva publicación
+      tags:
+        - Publicaciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '201':
+          description: Publicación creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /api/comments:
+    post:
+      summary: Crear un nuevo comentario
+      tags:
+        - Comentarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentInput'
+      responses:
+        '201':
+          description: Comentario creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+  /api/posttags:
+    post:
+      summary: Asociar un post con una etiqueta
+      tags:
+        - PostTags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTagInput'
+      responses:
+        '201':
+          description: Relación post-etiqueta creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostTag'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 components:
   schemas:
     User:
@@ -257,3 +348,92 @@ components:
           example: "Programación"
       required:
         - tag
+      
+      Post:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID único del post
+        userId:
+          type: string
+          description: ID del usuario que creó el post
+        content:
+          type: string
+          description: Contenido del post
+        creationDate:
+          type: string
+          format: date-time
+          description: Fecha de creación del post
+
+    PostInput:
+      type: object
+      required:
+        - userId
+        - content
+      properties:
+        userId:
+          type: string
+        content:
+          type: string
+    
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID único del comentario
+        comment:
+          type: string
+          maxLength: 200
+          description: Texto del comentario
+        creationDate:
+          type: string
+          format: date-time
+        visible:
+          type: boolean
+        userId:
+          type: string
+          description: ID del usuario que hizo el comentario
+        postId:
+          type: string
+          description: ID del post al que pertenece el comentario
+
+    CommentInput:
+      type: object
+      required:
+        - comment
+        - userId
+        - postId
+      properties:
+        comment:
+          type: string
+          maxLength: 200
+        userId:
+          type: string
+        postId:
+          type: string
+    
+    PostTag:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID único de la relación post-tag
+        postId:
+          type: string
+          description: ID del post
+        tagId:
+          type: string
+          description: ID de la etiqueta
+
+    PostTagInput:
+      type: object
+      required:
+        - postId
+        - tagId
+      properties:
+        postId:
+          type: string
+        tagId:
+          type: string
