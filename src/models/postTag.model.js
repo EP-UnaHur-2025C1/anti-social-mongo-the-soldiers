@@ -11,6 +11,8 @@ const postTagSchema = new mongoose.Schema({
         ref: "Tag",
         required: true
     }
-});
+}, { versionKey: false });
 
-module.exports = mongoose.model("PostTag", postTagSchema);
+const PostTag = mongoose.model("PostTag", postTagSchema)
+
+module.exports = PostTag;

@@ -1,0 +1,259 @@
+openapi: 3.0.0
+info:
+  title: Social-API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:9001
+
+paths:
+  /api/users:
+    get:
+      summary: Obtener todos los usuarios
+      tags:
+        - Usuarios
+      responses:
+        '200':
+          description: Lista de usuarios obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: Error interno al obtener los usuarios
+
+    post:
+      summary: Crear un nuevo usuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Usuario creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Error de validación al crear usuario
+
+  /api/users/{id}:
+    get:
+      summary: Obtener un usuario por ID
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error interno al obtener el usuario
+
+    put:
+      summary: Actualizar un usuario por ID
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: ID inválido o error al actualizar
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error interno al actualizar usuario
+
+    delete:
+      summary: Eliminar un usuario por ID
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado correctamente
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error interno al eliminar usuario
+  /api/tags:
+    get:
+      summary: Obtener todas las tags
+      tags:
+        - Tags
+      responses:
+        '200':
+          description: Lista de tags obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '500':
+          description: Error interno al obtener las tags
+    post:
+      summary: Crear una nueva tag
+      tags:
+        - Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagInput'
+      responses:
+        '201':
+          description: Tag creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          description: Error de validación al crear la tag
+  /api/tags/{id}:
+    get:
+      summary: Obtener una tag por ID
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          description: ID inválido
+        '404':
+          description: Tag no encontrada
+        '500':
+          description: Error interno al obtener la tag
+    put:
+      summary: Actualizar una tag por ID
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagInput'
+      responses:
+        '200':
+          description: Tag actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          description: ID inválido o error al actualizar
+        '404':
+          description: Tag no encontrada
+        '500':
+          description: Error interno al actualizar la tag
+    delete:
+      summary: Eliminar una tag por ID
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag eliminada correctamente
+        '400':
+          description: ID inválido
+        '404':
+          description: Tag no encontrada
+        '500':
+          description: Error interno al eliminar la tag
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        nickname:
+          type: string
+    UserInput:
+      type: object
+      properties:
+        nickname:
+          type: string
+      required:
+        - nickname
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+        tag:
+          type: string
+          example: "Programación"
+    TagInput:
+      type: object
+      properties:
+        tag:
+          type: string
+          example: "Programación"
+      required:
+        - tag

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { tagSchema, tagUpdateSchema } = require("../schemas/tag.schema");
+const { tagSchema, tagUpdateSchema } = require("./schema/tag.schema");
 
 const validateTagId = (req, res, next) => {
     const { id } = req.params;

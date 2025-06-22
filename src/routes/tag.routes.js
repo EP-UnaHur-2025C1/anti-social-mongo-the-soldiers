@@ -1,6 +1,9 @@
-const {Router} = require("express")
-const tagControllers = require("../controllers/tagControllers")
+const Router = require("express")
+const controllers = require("../controllers/main");
+const tagControllers = controllers.tag
+
 const tagMiddleware = require("../middleware/tag.middleware")
+
 const router = Router()
 
 router.get(`/`, tagControllers.getTags)

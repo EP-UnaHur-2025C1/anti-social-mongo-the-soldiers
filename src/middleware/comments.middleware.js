@@ -1,4 +1,4 @@
-const { comentSchema } = require("./schema/comet.schema");
+const { comentSchema } = require("./schema/comments.schema");
 const mongoose = require("mongoose");
 
 const validateCommentId = (req, res, next) => {
