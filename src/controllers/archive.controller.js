@@ -1,10 +1,7 @@
 const Archive = require('../models/archive.model');
 const uploadArchive = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
-    }
-
+    console.log(req.file);
     const PORT = process.env.PORT || 3000;
     const imageUrl = `http://localhost:${PORT}/images/${req.file.filename}`;
 

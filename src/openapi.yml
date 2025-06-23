@@ -506,7 +506,7 @@ paths:
                       $ref: '#/components/schemas/Archive'
         '500':
           description: Error al obtener archivos
-
+  /api/archives/upload:
     post:
       summary: Subir un nuevo archivo
       tags:
@@ -518,7 +518,7 @@ paths:
             schema:
               type: object
               properties:
-                file:
+                archive:
                   type: string
                   format: binary
                   description: Archivo a subir
@@ -651,22 +651,31 @@ components:
           type: string
           format: date-time
           description: Fecha de creación del post
-
     PostInput:
       type: object
-      required:
-        - userId
-        - content
       properties:
-        userId:
+        description:
           type: string
-        content:
+        author:
           type: string
-    
+        comments:
+         type: array
+         items:
+           type: string
+           nullable: true
+        images:
+          type: array
+          items:
+            type: string
+            nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+          nullable: true
     CommentInput:
       type: object
       required:
-        - comment
         - userId
         - postId
       properties:
@@ -715,7 +724,7 @@ components:
       properties:
         _id:
           type: string
-        imagenes:
+        archive:
           type: string
           description: URL completa de la imagen subida
         createdAt:
@@ -724,23 +733,3 @@ components:
         updatedAt:
           type: string
           format: date-time
-          
-    PostTag:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: ID único de la relación post-tag
-        postId:
-          type: string
-          description: ID del post
-        tagId:
-          type: string
-          description: ID de la etiqueta
-
-    PostTagInput:
-      type: object
-      required:
-        - postId
-        - tagId
-      properties:

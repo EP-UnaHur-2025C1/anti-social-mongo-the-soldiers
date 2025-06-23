@@ -9,10 +9,9 @@ const validateArchiveId = (req, res, next) => {
   next();
 };
 const validateCreateArchive = (req, res, next) => {
-  const { imagenes } = req.body;
-  const { error } = archiveSchema.validate({ imagenes });
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
+  console.log(req.file);
+   if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded" });
   }
   next();
 };

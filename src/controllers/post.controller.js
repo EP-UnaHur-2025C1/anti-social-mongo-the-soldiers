@@ -68,17 +68,29 @@ const updatePost = async (req, res) => {
   try {
     const { description, images, comments, tags } = req.body;
 
-    const updatedPost = await Post.findByIdAndUpdate(
-      req.params.id,
-      {
-        ...(description && { description }),
-        ...(comments && { comments }),
-        ...(images && { images }),
-        ...(tags && { tags })
-      },
-      { new: true }
-    );
+    // Armar objeto con solo campos no vacíos
+    const updateData = {};
+
+    if (typeof description === 'string' && description.trim() !== '') {
+      updateData.description = description.trim();
+    }
+    if (Array.isArray(comments) && comments.length > 0) {
+      updateData.comments = comments;
+    }
+    if (Array.isArray(images) && images.length > 0) {
+      updateData.images = images;
+    }
+    if (Array.isArray(tags) && tags.length > 0) {
+      updateData.tags = tags;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ message: 'No valid fields to update.' });
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!updatedPost) return res.status(404).json({ message: 'Post not found for update.' });
+
     res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ message: 'Error updating post.', error: error.message });
@@ -88,7 +100,6 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const deleted = await Post.findByIdAndDelete(req.params.id);
-
     if (!deleted) return res.status(404).json({ message: 'Post not found for deletion.' });
     res.status(200).json({ message: 'Post deleted successfully.' });
   } catch (error) {
