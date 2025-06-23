@@ -140,57 +140,47 @@ A continuación, se muestra un ejemplo de la respuesta JSON para un post con sus
 ```json
 [
   {
-    "id": "665fa0b1dbe8b5e8fc0a0033",
-    "content": "¿Cómo conectarse a MongoDB desde Node.js?",
-    "creationDate": "2025-06-10T12:00:00Z",
-    "user": {
-      "id": "665fa0b1dbe8b5e8fc0a0011",
-      "nickName": "fede_breme",
-      "email": "fede@mail.com"
+    "_id": "68595ac9a546321790349925",
+    "description": "string",
+    "author": {
+      "_id": "685854d24c67a829399eeca0",
+      "nickname": "Franco"
     },
-    "comments": [
+    "images": [
       {
-        "id": "665fa0b1dbe8b5e8fc0a0055",
-        "comment": "Muy útil, gracias!",
-        "userId": "665fa0b1dbe8b5e8fc0a0011"
+        "_id": "685957547ac7cb26bb90eccb",
+        "imagenes": "http://localhost:9001/images/archive-1750685524016-399893664.jpeg"
       }
     ],
     "tags": [
       {
-        "id": "665fa0b1dbe8b5e8fc0a0022",
+        "_id": "685854db4c67a829399eeca2",
         "tag": "Programación"
       }
     ],
-    "images": [
+    "comments": [],
+    "createdAt": "2025-06-23T13:46:49.059Z",
+    "updatedAt": "2025-06-23T14:41:54.769Z",
+    "__v": 0
+  },
+  {
+    "_id": "685961c3004e2bd630b79ea5",
+    "description": "Nuevo texto descriptivo",
+    "author": {
+      "_id": "685854d24c67a829399eeca0",
+      "nickname": "Franco"
+    },
+    "images": [],
+    "tags": [
       {
-        "id": "665fa0b1dbe8b5e8fc0a0044",
-        "url": "https://cloudinary.com/image/example.png"
+        "_id": "685854db4c67a829399eeca2",
+        "tag": "Programación"
       }
-    ]
+    ],
+    "comments": [],
+    "createdAt": "2025-06-23T14:16:35.212Z",
+    "updatedAt": "2025-06-23T14:18:59.248Z",
+    "__v": 0
   }
 ]
-```
-
-## Estructura del Proyecto
-
-```
-red-anti-social/
-├── assets/                    # Recursos estáticos o de diseño (no obligatorio)
-├── data/                      # Base de datos
-├── src/                       # Carpeta principal del backend
-│   ├── config/                # Configuración de base de datos (MongoDB, dotenv)
-│   ├── controllers/           # Lógica de control para cada entidad (Tags, Comments, etc.)
-│   ├── middleware/            # Middlewares de validación con Joi, errores, etc.
-│   ├── mocks/                 # Colecciones de prueba (JSON de ejemplo)
-│   ├── models/                # Modelos de Mongoose para cada entidad (Tag, Comment, etc.)
-│   ├── routes/                # Definición de rutas para la API (Express Router)
-│   ├── main.js                # Punto de entrada principal del servidor Express
-│   └── openapi.yml            # Documentación Swagger en formato YAML
-├── .env                      # Variables de entorno (puerto, conexión MongoDB, etc.)
-├── .gitignore                # Archivos y carpetas ignoradas por git
-├── docker-compose.yml        # Configuración para correr MongoDB vía Docker
-├── Dockerfile                # Configuración para dockerizar la aplicación (opcional)
-├── package.json              # Dependencias y scripts de npm
-├── package-lock.json         # Registro de versiones exactas de paquetes
-├── README.md                 # Documentación general del proyecto
 ```
