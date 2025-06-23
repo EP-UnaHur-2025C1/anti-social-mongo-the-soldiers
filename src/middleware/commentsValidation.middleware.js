@@ -1,16 +1,15 @@
-const { comentSchema } = require("./schema/comments.schema");
 const mongoose = require("mongoose");
+const { comentSchema } = require("./schema/comments.schema");
 
 const validateCommentId = (req, res, next) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: "Invalid ID" });
+        return res.status(400).json({ error: "Invalid comment ID." });
     }
 
     next();
 };
-
 const validateCreateComment = (req, res, next) => {
     const { error } = comentSchema.validate(req.body);
 
@@ -20,7 +19,6 @@ const validateCreateComment = (req, res, next) => {
 
     next();
 };
-
 const validateUpdateComment = (req, res, next) => {
     const { error } = comentSchema.validate(req.body);
 

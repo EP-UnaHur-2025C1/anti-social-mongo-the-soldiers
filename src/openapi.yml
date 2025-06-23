@@ -5,9 +5,13 @@ info:
 
 servers:
   - url: http://localhost:9001
+  - url: https://anti-social-mongo-the-soldiers.onrender.com
 
 paths:
+  
+  
   /api/users:
+    
     get:
       summary: Obtener todos los usuarios
       tags:
@@ -45,6 +49,7 @@ paths:
           description: Error de validación al crear usuario
 
   /api/users/{id}:
+    
     get:
       summary: Obtener un usuario por ID
       tags:
@@ -119,7 +124,9 @@ paths:
         '500':
           description: Error interno al eliminar usuario
 
+
   /api/tags:
+    
     get:
       summary: Obtener todas las tags
       tags:
@@ -135,6 +142,7 @@ paths:
                   $ref: '#/components/schemas/Tag'
         '500':
           description: Error interno al obtener las tags
+    
     post:
       summary: Crear una nueva tag
       tags:
@@ -154,7 +162,9 @@ paths:
                 $ref: '#/components/schemas/Tag'
         '400':
           description: Error de validación al crear la tag
+  
   /api/tags/{id}:
+  
     get:
       summary: Obtener una tag por ID
       tags:
@@ -178,6 +188,7 @@ paths:
           description: Tag no encontrada
         '500':
           description: Error interno al obtener la tag
+    
     put:
       summary: Actualizar una tag por ID
       tags:
@@ -207,6 +218,7 @@ paths:
           description: Tag no encontrada
         '500':
           description: Error interno al actualizar la tag
+    
     delete:
       summary: Eliminar una tag por ID
       tags:
@@ -227,7 +239,9 @@ paths:
         '500':
           description: Error interno al eliminar la tag
   
+  
   /api/posts:
+  
     get:
       summary: Obtener todos los posts
       tags:
@@ -241,7 +255,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Post'
-        '500': 
 
     post:
       summary: Crear una nueva publicación
@@ -260,7 +273,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
+        '500':
+          description: Error interno para crear publicacion
+  
+  /api/posts/{id}:
+    
+    get:
+      summary: Obtener publicación por ID
+      tags:
+        - Publicaciones
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la publicación
+      responses:
+        '200':
+          description: Publicación encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Publicación no encontrada
+        '500':
+          description: Error interno al obtener publicación
+
+    put:
+      summary: Actualizar publicación
+      tags:
+        - Publicaciones
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la publicación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '200':
+          description: Publicación actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Publicación no encontrada para actualización
+        '500':
+          description: Error interno al actualizar publicación
+
+    delete:
+      summary: Eliminar publicación
+      tags:
+        - Publicaciones
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la publicación
+      responses:
+        '200':
+          description: Publicación eliminada correctamente
+        '404':
+          description: Publicación no encontrada para eliminación
+        '500':
+          description: Error interno al eliminar publicación
+  
+ 
   /api/comments:
+    get:
+      summary: Obtener todos los comentarios
+      tags:
+        - Comentarios
+      responses:
+        '200':
+          description: Lista de comentarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '500':
+          description: Error interno al obtener los comentarios
+
     post:
       summary: Crear un nuevo comentario
       tags:
@@ -278,46 +384,224 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
-  /api/posttags:
-    post:
-      summary: Asociar un post con una etiqueta
+        '400':
+          description: Error de validación al crear comentario
+
+  /api/comments/{id}:
+    get:
+      summary: Obtener un comentario por ID
       tags:
-        - PostTags
+        - Comentarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del comentario
+      responses:
+        '200':
+          description: Comentario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '404':
+          description: Comentario no encontrado
+        '500':
+          description: Error interno al obtener comentario
+
+    put:
+      summary: Editar un comentario
+      tags:
+        - Comentarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del comentario
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostTagInput'
+              $ref: '#/components/schemas/CommentInput'
       responses:
-        '201':
-          description: Relación post-etiqueta creada
+        '200':
+          description: Comentario actualizado correctamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostTag'
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Error de validación al actualizar comentario
+        '404':
+          description: Comentario no encontrado
+        '500':
+          description: Error interno al actualizar comentario
 
+    delete:
+      summary: Eliminar un comentario
+      tags:
+        - Comentarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del comentario
+      responses:
+        '200':
+          description: Comentario eliminado correctamente
+        '404':
+          description: Comentario no encontrado
+        '500':
+          description: Error interno al eliminar comentario
 
+  /api/comments/per-month:
+    get:
+      summary: Obtener comentarios de los últimos X meses
+      tags:
+        - Comentarios
+      parameters:
+        - in: query
+          name: months
+          schema:
+            type: integer
+            minimum: 1
+          description: Cantidad de meses hacia atrás 
+      responses:
+        '200':
+          description: Lista de comentarios recientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentPerMonth'
+        '500':
+          description: Error interno al obtener comentarios por meses
+          
+  /api/archives:
+    get:
+      summary: Obtener todos los archivos subidos
+      tags:
+        - Archivos
+      responses:
+        '200':
+          description: Lista de archivos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Archive'
+        '500':
+          description: Error al obtener archivos
 
+    post:
+      summary: Subir un nuevo archivo
+      tags:
+        - Archivos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Archivo a subir
+      responses:
+        '201':
+          description: Archivo subido correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Archive'
+        '400':
+          description: No se subió ningún archivo
+        '500':
+          description: Error al subir el archivo
 
+  /api/archives/{id}:
+    get:
+      summary: Obtener un archivo por ID
+      tags:
+        - Archivos
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del archivo
+      responses:
+        '200':
+          description: Archivo encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Archive'
+        '404':
+          description: Archivo no encontrado
+        '500':
+          description: Error al obtener el archivo
 
-
-
-
-
-
-
-
-
-
-
-
-
+    delete:
+      summary: Eliminar un archivo
+      tags:
+        - Archivos
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del archivo
+      responses:
+        '200':
+          description: Archivo eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Archive'
+        '404':
+          description: Archivo no encontrado
+        '500':
+          description: Error al eliminar el archivo
 
 
 
 components:
+ 
   schemas:
+ 
     User:
       type: object
       properties:
@@ -332,6 +616,7 @@ components:
           type: string
       required:
         - nickname
+  
     Tag:
       type: object
       properties:
@@ -340,6 +625,7 @@ components:
         tag:
           type: string
           example: "Programación"
+
     TagInput:
       type: object
       properties:
@@ -349,7 +635,7 @@ components:
       required:
         - tag
       
-      Post:
+    Post:
       type: object
       properties:
         _id:
@@ -377,28 +663,6 @@ components:
         content:
           type: string
     
-    Comment:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: ID único del comentario
-        comment:
-          type: string
-          maxLength: 200
-          description: Texto del comentario
-        creationDate:
-          type: string
-          format: date-time
-        visible:
-          type: boolean
-        userId:
-          type: string
-          description: ID del usuario que hizo el comentario
-        postId:
-          type: string
-          description: ID del post al que pertenece el comentario
-
     CommentInput:
       type: object
       required:
@@ -408,12 +672,59 @@ components:
       properties:
         comment:
           type: string
-          maxLength: 200
+        creationDate:
+          type: string
+          format: date-time
+        userId:
+          type: string
+          description: ID del usuario
+        postId:
+          type: string
+          description: ID del post
+        visible:
+          type: boolean
+
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+        comment:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
         userId:
           type: string
         postId:
           type: string
-    
+        visible:
+          type: boolean
+
+    CommentPerMonth:
+      type: object
+      properties:
+        comment:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+
+    Archive:
+      type: object
+      properties:
+        _id:
+          type: string
+        imagenes:
+          type: string
+          description: URL completa de la imagen subida
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          
     PostTag:
       type: object
       properties:
@@ -433,7 +744,3 @@ components:
         - postId
         - tagId
       properties:
-        postId:
-          type: string
-        tagId:
-          type: string
