@@ -1,4 +1,5 @@
 const Comments = require("../models/comment.model");
+const Post = require('../models/post.model');
 
 const getComments = async (req, res) => {
     try {
@@ -46,14 +47,25 @@ const getComment = async (req, res) => {
 };
 
 const createComment = async (req, res) => {
-    try {
-        const newComment = await Comments.create(req.body);
-        res.status(201).json(newComment);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
+  try {
+    const { comment, userId, postId } = req.body;
 
+    const newComment = await Comments.create({
+      comment,
+      userId,
+      postId
+    });
+
+    await Post.findByIdAndUpdate(postId, {
+      $push: { comments: newComment._id }
+    });
+
+    res.status(201).json(newComment);
+  } catch (error) {
+    console.error('Error al crear comentario:', error);
+    res.status(500).json({ message: 'Error al crear comentario.' });
+  }
+};
 
 const editComment = async (req, res) => {
     try {

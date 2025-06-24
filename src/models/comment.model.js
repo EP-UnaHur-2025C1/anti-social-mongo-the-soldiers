@@ -17,14 +17,14 @@ const commentSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true  //preguntar
+    required: true  
   },
   postId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
-    required: true //preguntar
+    required: true 
   }
-}, { versionKey: false }); // Disable versioning
+}, { versionKey: false }); 
 
 const Comment = mongoose.model('Comment', commentSchema);
 

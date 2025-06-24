@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'El nombre es obligatorio'],
     minlength: [2, 'El nombre debe tener al menos 2 caracteres']
   }
-}, { versionKey: false }); // Esto quita __v
+}, { versionKey: false }); 
 
 const User = mongoose.model('User', userSchema);
 
