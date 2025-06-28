@@ -17,6 +17,12 @@ const validateCreateComment = (req, res, next) => {
         return res.status(400).json({ error: error.details[0].message });
     }
 
+    const { postId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+        return res.status(400).json({ error: "Invalid post ID" });
+    }
+
     next();
 };
 const validateUpdateComment = (req, res, next) => {

@@ -1,4 +1,5 @@
 const Tag = require("../models/tag.model");
+const Post = require('../models/post.model');
 
 // Obtener todos los tags
 const getTags = async (req, res) => {
@@ -24,11 +25,27 @@ const getTag = async (req, res) => {
 // Crear tag (validación de body en middleware)
 const createTag = async (req, res) => {
   try {
-    const newTag = new Tag({ tag: req.body.tag });
-    await newTag.save();
-    res.status(201).json(newTag);
+    const { tag, postId } = req.body;
+
+    const postExists = await Post.exists({ _id: postId });
+    if (!postExists) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    let existingTag = await Tag.findOne({ tag });
+
+    if (!existingTag) {
+      existingTag = await Tag.create({ tag });
+    }
+
+    await Post.findByIdAndUpdate(postId, {
+      $addToSet: { tags: existingTag._id } 
+    });
+
+    res.status(201).json(existingTag);
   } catch (error) {
-    res.status(400).json({ error: 'Error creating tag', details: error.message });
+    console.error('Error creando tag:', error);
+    res.status(500).json({ error: 'Error creating tag', details: error.message });
   }
 };
 
